@@ -1,2 +1,2 @@
-# Jays_Atlas
+# Atlas
 A repository of completed map projects
