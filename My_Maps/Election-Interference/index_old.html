@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+
+  <title>Hotspots of US Election Interference: 1946-2000</title>
+  <meta charset='utf-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <link href='https://api.mapbox.com/mapbox-assembly/v0.8.0/assembly.min.css' rel='stylesheet'>
+  <link href='https://api.mapbox.com/mapbox.js/v3.0.1/mapbox.css' rel='stylesheet'>
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css">
+
+  <style>
+    body {
+      margin: 0px;
+      height: 100%;
+      width: 100%;
+    }
+
+    header {
+      background-image: url('../images/Ngo_Dinh_Diem_at_Washington_-_ARC_542189.jpg');
+      position: fixed;
+      width: 100%;
+      height: 100px;
+      background-color: #000000;
+      box-shadow: 0px 5px 5px #2B1B17;
+      z-index: 800;
+    }
+
+    .title ul {
+      font-size: 10px;
+    }
+
+    .legend {
+      background-color: #fff;
+      border-radius: 5px;
+      bottom: 30px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.10);
+      font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+      padding: 5px;
+      position: absolute;
+      right: 5px;
+      z-index: 1;
+    }
+
+    .legend h4 {
+      font-size: 14px;
+      margin: 0 0 10px;
+    }
+
+    .legend div span {
+      border-radius: 50%;
+      display: inline-block;
+      height: 10px;
+      margin-right: 5px;
+      width: 10px;
+    }
+
+    .Circle-Int {
+      color: #67271d;
+    }
+
+    .leaflet-popup-close-button {
+       display: none;
+    }
+
+    h1 {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    .legend-large,
+    .legend-small {
+      border-radius: 50%;
+    }
+
+    hr.small,
+    hr.large {
+      width: 45px;
+      position: absolute;
+      top: -8px;
+      left: 60px;
+      border: 1px solid #ccc;
+      /* overwrite assembly.css rule */
+      margin-top: 8px;
+      /* overwrite assembly.css rule */
+    }
+
+    .title {
+        padding: 6px 8px;
+        font: 14px/16px Arial, Helvetica, sans-serif;
+        background: white;
+        background: rgba(255,255,255,0.7);
+        box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        border-radius: 5px;
+    }
+
+    .leaflet-fade-anim .leaflet-tile,.leaflet-zoom-anim .leaflet-zoom-animated { will-change:auto !important; }*/
+  </style>
+
+</head>
+
+<body>
+
+  <div class='grid'>
+
+    <div class='col--12-ml h180 h-full-ml'>
+
+      <div id="map" class='viewport-full-ml'></div>
+
+      <!-- ui slider -->
+      <div id='slider' class='range w240 bg-white border border--gray-light round-ml p12'>
+        <input type='range' min="1946" max="2000" value="1946" step="1" class="slider" />
+      </div>
+      <!-- end slider -->
+
+      <!-- temporal legend -->
+      <div id='temporal' class='py6 px12 bg-white border border--gray-light round bottom left wmax200'>
+        <h3 class='txt-bold'>Year: <span></span></h3>
+      </div>
+      <!-- end temporal -->
+
+      <!-- map legend -->
+      <div id='perc-legend' class='legend'>
+        <div class='grid'>
+          <nav class='col3'>
+            <h3><strong>Type of<br>Interference</strong></h3>
+            <div>
+              <br><img src="images/binoculars.png" alt="legend" width="28" height="35"> Covert<br><img src="images/bullhorn.png" alt="legend" width="28" height="35"> Overt
+            </div>
+          </nav>
+          <div class='col9 mx24'>
+            <h3 class='txt-bold mb12 w-full mx-auto'>Total Incidents of<br>Election Interference</h3>
+            <p class='mb6 mt30'></p>
+            <div class='legend-circles relative w100 wmax100'>
+              <div class="legend-large border absolute" style='color: #FF8C00'></div>
+              <div class="legend-small border absolute" style='color: #FF8C00'></div>
+              <div class="legend-large-label txt-m absolute"></div>
+              <div class="legend-small-label txt-m absolute"></div>
+            </div>
+          </div>
+        </div>
+        <!-- end grid -->
+      </div>
+      <!-- end perc-legend -->
+
+      <!-- circle-bound information window -->
+      <div id='circleInfo' class='py6 px12 bg-gray-faint border border--gray-light round absolute wmax200 none'>
+        <h3 class='txt-bold'><span></span></h3>
+        <p class='Circle-Int'><span class='txt-2'></span></p>
+      </div>
+      <!-- end circleInfo -->
+
+    </div>
+
+  </div>
+
+  <script src='https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.js'></script>
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="leaflet_awesome_markers.js"></script>
+
+  <!-- begin javascript -->
+  <script>
+
+  // load a tile layer
+  var cartoMap = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {attribution: '&copy; <a href="https://openstreetmap.org">OpenStreetMap</a> &copy; <a href="https://cartodb.com/attributions">CartoDB</a>'});
+
+  //Map creation
+	var map = L.map('map',{
+		layers: [cartoMap],
+    zoomControl: false,
+    zoomDelta: 0.25,
+    zoomSnap: 0.25,
+    minZoom: 2,
+    maxZoom: 5,
+    maxBounds: L.latLngBounds([90.0, 180.0], [-90.0, -180.0])
+	});
+
+  // fit map to world...
+    map.fitWorld().zoomIn();
+    // ...according to window size
+    map.on('resize', function(e) {
+        map.fitWorld({reset: true}).zoomIn();
+    });
+
+    /*
+     * Workaround for 1px lines appearing in some browsers due to fractional transforms
+     * and resulting anti-aliasing.
+     * https://github.com/Leaflet/Leaflet/issues/3575
+     */
+    (function(){
+        var originalInitTile = L.GridLayer.prototype._initTile
+        L.GridLayer.include({
+            _initTile: function (tile) {
+                originalInitTile.call(this, tile);
+
+                var tileSize = this.getTileSize();
+
+                tile.style.width = tileSize.x + 1 + 'px';
+                tile.style.height = tileSize.y + 1 + 'px';
+            }
+        });
+    })()
+
+    var title = L.control({position: 'topleft'}); // position of the title
+
+    title.onAdd = function (map) {
+        this._div = L.DomUtil.create('div', 'title'); // create a div with a class "title"
+        this._div.innerHTML = "<b><font size=4>Global Election Interference by the US: 1946-2000</b>"+
+                              "<br><ul>Map by Jay Bowen, 2019"+
+                              "<br>Data courtesy of <a href = 'https://www.dovhlevin.com/datasets'>Dov H. Levin, PhD</a>"+
+                              "<br>Markers customized with <a href = 'https://fontawesome.com/license'>Font Awesome</a> and <a href = 'https://getbootstrap.com/'>Bootstrap</a></ul>";  // Title text, may use html to customize
+        return this._div;
+    };
+
+    title.addTo(map);
+    L.control.zoom().addTo(map);
+
+    // create default options for circle markers
+    var options = {
+      pointToLayer: function(feature, ll) {
+        return L.circleMarker(ll, {
+          opacity: 0,
+          weight: 1,
+          fillOpacity: 0.25,
+          fillColor: '#FFA500',
+          color: '#FF8C00',
+          weight: 1
+        })
+      }
+    }; // end create default options for circle markers
+
+    var icons = {
+      pointToLayer: function(feature, ll) {
+        return L.marker(ll, {icon: L.AwesomeMarkers.icon({icon: 'binoculars', prefix: 'fa', markerColor: 'red', iconColor: 'white'})
+        })
+      }
+    }; // end create default options for covert icons
+
+    var markers = {
+      pointToLayer: function(feature, ll) {
+        return L.marker(ll, {icon: L.AwesomeMarkers.icon({icon: 'bullhorn', prefix: 'fa', markerColor: 'green', iconColor: 'white'})
+        })
+      }
+    }; // end create default options for overt icons
+
+    // load the data asynchronously
+    d3.queue()
+      .defer(d3.csv, 'data/Interference.csv')
+      .await(drawMap);
+
+    //function drawMap(err, sipri, vols) {
+    function drawMap(err, cumulative) {
+
+      drawCircles(cumulative);
+
+    }; // end drawMap function
+
+    // add a temporal legend in sync with the UI slider
+    function createTemporalLegend(currentYear) {
+
+      var temporalLegend = L.control({
+        position: 'bottomleft' // place the temporal legend at bottom left corner
+      });
+
+      // when added to the map
+      temporalLegend.onAdd = function(map) {
+
+        var div = L.DomUtil.get("temporal"); // get the style settings
+
+        // disable the mouse events
+        L.DomEvent.disableScrollPropagation(div);
+        L.DomEvent.disableClickPropagation(div);
+
+        return div; // return the style settings
+
+      }
+
+      $('#temporal span').html(currentYear); // change grade value to that currently selected by UI slider
+
+      temporalLegend.addTo(map); // add the temporal legend to the map
+
+    }; // end createTemporalLegend function
+
+    // add a UI slider
+    function sequenceUI(cumulativeInt, covertInt, overtInt) {
+
+      // create Leaflet control for the slider
+      var sliderControl = L.control({
+        position: 'bottomleft',
+        follow: true
+      });
+
+      // add controls to the slider
+      sliderControl.onAdd = function(map) {
+
+        var controls = L.DomUtil.get("slider");
+
+        L.DomEvent.disableScrollPropagation(controls);
+        L.DomEvent.disableClickPropagation(controls);
+
+        return controls;
+
+      }
+
+      // add the control to the map
+      sliderControl.addTo(map);
+
+      $('.slider')
+        .on('input change', function() {
+          var currentYear = $(this).val(); // identifies the year selected
+          createTemporalLegend(currentYear);
+          resizeCircles(cumulativeInt, currentYear);
+          createCovertSymbols(covertInt, currentYear);
+          createOvertSymbols(overtInt, currentYear);
+          retrieveCircleInfo(cumulativeInt, currentYear);
+          retrieveCovertInfo(covertInt, currentYear);
+          retrieveOvertInfo(overtInt, currentYear);
+        });
+
+    }; // End sequenceUI function
+
+    // draw proportional circles
+    function drawCircles(data) {
+
+      // build the geojson from the csv data
+      var geojson = {
+        "type": "FeatureCollection",
+        "features": []
+      }
+
+      var feature;
+
+      data.forEach(function(datum) {
+
+        // add coordinate data as points
+        feature = {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [datum.Long, datum.Lat]
+          },
+          "properties": datum
+        }
+
+        // push points to a geojson feature collection
+        geojson.features.push(feature);
+
+      });
+
+      // define a circle variable for each year
+      var cumulativeInt = L.geoJson(geojson, options);
+      var covertInt = L.geoJson(geojson, icons);
+      var overtInt = L.geoJson(geojson, markers);
+      var currentYear = $('.slider').val();
+
+
+      sequenceUI(cumulativeInt, covertInt, overtInt);
+      createTemporalLegend(currentYear); // produces temporal legend upon map loading
+      resizeCircles(cumulativeInt, currentYear);
+      createCovertSymbols(covertInt, currentYear);
+      createOvertSymbols(overtInt, currentYear);
+      retrieveCircleInfo(cumulativeInt, currentYear);
+      retrieveCovertInfo(covertInt, currentYear);
+      retrieveOvertInfo(overtInt, currentYear);
+      drawLegend(cumulativeInt);
+
+      var overlays = {
+        "Total Incidents of Election Interference": cumulativeInt,
+        //"Covert Election Interference": covertInt
+      };
+
+      // all done with the layers, add them to layer control
+      L.control.layers(null, overlays, {
+        collapsed: false,
+      }).addTo(map);
+
+    }; // end drawCircles() function
+
+    // calculate circle radii
+    function calcRadius(val) {
+      var radius = Math.sqrt(val / Math.PI);
+      return radius * 16; // adjust 16 as a scale factor
+    }; // end calcRadius() function
+
+    // resize our default circles based on cumulative incidents of election interference
+    function resizeCircles(cumulativeInt, currentYear) {
+
+      // alter circle radii based on cumulative interference
+      cumulativeInt.eachLayer(function(layer) {
+        var radius = calcRadius(Number(layer.feature.properties[currentYear]));
+        layer.setRadius(radius);
+        if (radius > 0) {layer.setStyle({opacity: 1})};
+      });
+    }; // end resizeCircles() function
+
+    function createCovertSymbols(covertInt, currentYear) {
+      // make markers appear based on covert interference
+      covertInt.eachLayer(function(layer) {
+        // define layer properties
+        var props = layer.feature.properties;
+        // access the binary properties of the layer
+        var def = Number(props[currentYear + '_Covert']);
+        // if the binary properties are not equal to zero, add the layer
+        if (def != 0) {map.addLayer(layer)}
+        // otherwise remove the layer (if no interference occurred)
+        else {map.removeLayer(layer)};
+      });
+    }; // end createCovertSymbols() function
+
+    function createOvertSymbols(overtInt, currentYear) {
+      // make markers appear based on overt interference
+      overtInt.eachLayer(function(layer) {
+        // define layer properties
+        var props = layer.feature.properties;
+        // access the binary properties of the layer
+        var def = Number(props[currentYear + '_Overt']);
+        // if the binary properties are not equal to zero, add the layer
+        if (def != 0) {map.addLayer(layer)}
+        // otherwise remove the layer (if no interference occurred)
+        else {map.removeLayer(layer)};
+      });
+    }; // end createOvertSymbols() function
+
+    // retrieve an info window for proportional circles
+    function retrieveCircleInfo(cumulativeInt, currentYear) {
+
+      var info = $('#circleInfo'); // select the element and reference with variable
+
+      cumulativeInt.on('mouseover', function(e) { // use cumulativeInt to detect mouseover events
+
+        info.removeClass('none').show(); // remove the none class to display the element
+
+        var props = e.layer.feature.properties; // derive the properties of the target layer
+
+        // populate our info window HTML elements with the relevant information using jQuery
+        $('#circleInfo span').html(props.Country + ' (1946 - ' + currentYear + ')'); // the name of the current nation the user is hovering over
+
+        // Interference count:
+        $(".Circle-Int span:first-child").html('Interference Count: ' + props[currentYear]);
+        //$(".Circle-TIV span:last-child").html(props[currentYear]);
+
+        // raise opacity level as visual affordance
+        e.layer.setStyle({
+          fillOpacity: 0.5
+        });
+
+      });
+
+      // hide the info panel when mousing off layergroup and remove affordance opacity
+      cumulativeInt.on('mouseout', function(e) {
+        info.hide();
+        e.layer.setStyle({
+          fillOpacity: 0.25
+        });
+      });
+
+      // when the mouse moves on the document
+      $(document).mousemove(function(e) {
+        // first offset from the mouse position of the info window
+        info.css({
+          "left": e.pageX - 200,
+          "top": e.pageY - 150
+        });
+
+        // if it crashes into the top, flip it lower right
+        if (info.offset().top < 4) {
+          info.css({
+            "top": e.pageY + 15
+          });
+        }
+        // if it crashes into the right, flip it to the left
+        if (info.offset().left + info.width() >= $(document).width() - 40) {
+          info.css({
+            "left": e.pageX - info.width() - 80
+          });
+        }
+
+      });
+
+    }; // end retrieveCircleInfo() function
+
+    // retrieve an info window for covert icons
+    function retrieveCovertInfo(covertInt, currentYear) {
+
+      covertInt.eachLayer(function(layer) {
+          var props = layer.feature.properties;
+          layer.bindPopup("<b style=font-size:16px>" + props.Country + " (" + currentYear + ") - Covert" + "</b>" +
+                          "<br><b style=font-size:14px>" + "Interference Tactics:" + "</b>" +
+                          "<br>" + props[currentYear + '_Type'] +
+                          "<br><b style=font-size:14px>" + "Party or Candidate Assisted:" + "</b>" +
+                          "<br>" + props[currentYear + "_PC_Assisted"]
+                          );
+          layer.on('mouseover', function (e) {
+            this.openPopup();
+          });
+          layer.on('mouseout', function (e) {
+            this.closePopup();
+          })
+      })
+
+    }; // end retrieveCovertInfo() function
+
+    // retrieve an info window for overt icons
+    function retrieveOvertInfo(overtInt, currentYear) {
+
+      overtInt.eachLayer(function(layer) {
+          var props = layer.feature.properties;
+          layer.bindPopup("<b style=font-size:16px>" + props.Country + " (" + currentYear + ") - Overt" + "</b>" +
+                          "<br><b style=font-size:14px>" + "Interference Tactics:" + "</b>" +
+                          "<br>" + props[currentYear + '_Type'] +
+                          "<br><b style=font-size:14px>" + "Party or Candidate Assisted:" + "</b>" +
+                          "<br>" + props[currentYear + "_PC_Assisted"]
+                          );
+          layer.on('mouseover', function (e) {
+            this.openPopup();
+          });
+          layer.on('mouseout', function (e) {
+            this.closePopup();
+          })
+      })
+
+    }; // end retrieveOvertInfo() function
+
+    // draw a map legend
+    function drawLegend(cumulativeInt) {
+
+      var dataValues = []; // create an empty array
+
+      cumulativeInt.eachLayer(function(layer) { // needs eachLayer() because it is a layer group
+
+        var props = layer.feature.properties;
+
+        // loop through the Leaflet layer group's properties and push values to the empty arrays
+        for (var i = 1946; i <= 2000; i += 1) {
+          dataValues.push(
+            Number(props[i])
+          );
+        }
+      }); // derive the properties of the target layer
+
+      // sort our array
+      var sortedValues = dataValues.sort(function(a, b) {
+        return b - a;
+      });
+
+      // round the highest number and use as our large circle diameter
+      var maxValue = Math.round(sortedValues[0]);
+
+      // calc the diameters
+      var largeDiameter = calcRadius(maxValue) * 2.2,
+        smallDiameter = largeDiameter / 1.5;
+
+      // select our circles container and set the height
+      $(".legend-circles").css('height', largeDiameter.toFixed());
+
+      // set width and height for large circle
+      $('.legend-large').css({
+        'width': largeDiameter.toFixed(),
+        'height': largeDiameter.toFixed()
+      });
+
+      // set width and height for small circle and position
+      $('.legend-small').css({
+        'width': smallDiameter.toFixed(),
+        'height': smallDiameter.toFixed(),
+        'top': largeDiameter - smallDiameter,
+        'left': smallDiameter / 4
+      })
+
+      // label the max and median value
+      $(".legend-large-label").html(maxValue);
+      $(".legend-small-label").html(Math.round(maxValue / 2));
+
+      // adjust the position of the large based on size of circle
+      $(".legend-large-label").css({
+        'top': -11,
+        'left': largeDiameter + 55,
+      });
+
+      // adjust the position of the small based on size of circle
+      $(".legend-small-label").css({
+        'top': smallDiameter - 20,
+        'left': largeDiameter + 55
+      });
+
+      // insert a couple hr elements and use to connect value label to top of each circle
+      $("<hr class='large'>").insertBefore(".legend-large-label")
+      $("<hr class='small'>").insertBefore(".legend-small-label").css('top', largeDiameter - smallDiameter);
+
+    }; // end drawLegend() function
+
+
+  </script>
+
+</body>
+
+</html>
