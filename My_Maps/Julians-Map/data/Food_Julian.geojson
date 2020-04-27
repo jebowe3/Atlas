@@ -1,0 +1,16 @@
+{
+"type": "FeatureCollection",
+"name": "Food_Julian",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "amenity": "food and cafes", "name": "Kentucky Native Cafe", "opening_hours": "Mo-Fr 16:00-22:00, Sa-Su 11:00-22:00", "website": "https:\/\/www.michlers.com\/pages\/cafe", "phone": "(859) 281-1718" }, "geometry": { "type": "Point", "coordinates": [ -84.4945763, 38.03845502 ] } },
+{ "type": "Feature", "properties": { "amenity": "food and cafes", "name": "Good Foods Cafe", "opening_hours": "Mo-Su 8:00-21:00", "website": "https:\/\/goodfoods.coop\/products\/departments\/cafe\/", "phone": "(859) 278-1813" }, "geometry": { "type": "Point", "coordinates": [ -84.52718936, 38.01980012 ] } },
+{ "type": "Feature", "properties": { "amenity": "food and cafes", "name": "Lexington Farmer's Market - Downtown", "opening_hours": "Apr-Oct, Sa 7:00-14:00, Nov-Mar, Sa 8:00-13:00", "website": "https:\/\/www.lexingtonfarmersmarket.com\/", "phone": "(859) 608-2655" }, "geometry": { "type": "Point", "coordinates": [ -84.49817384, 38.04797336 ] } },
+{ "type": "Feature", "properties": { "amenity": "food and cafes", "name": "Southland Bagel", "opening_hours": "Mo-Fr 7:00-15:00, Sa-Su 8:00-14:00", "website": "https:\/\/www.southlandbagel.com\/", "phone": "(859) 309-2286" }, "geometry": { "type": "Point", "coordinates": [ -84.52786876, 38.0185877 ] } },
+{ "type": "Feature", "properties": { "amenity": "food and cafes", "name": "Lexington Farmers Market - Southland Drive", "opening_hours": "Apr-Oct, Su 10:00-14:00", "website": "https:\/\/www.lexingtonfarmersmarket.com\/", "phone": "(859) 608-2655" }, "geometry": { "type": "Point", "coordinates": [ -84.5262191, 38.01766346 ] } },
+{ "type": "Feature", "properties": { "amenity": "food and cafes", "name": "Costco", "opening_hours": "Mo-Fr 10:00-20:30, Sa 9:30-18:00, Su 10:00-18:00", "website": "https:\/\/www.costco.com\/warehouse-locations\/lexington-ky-1156.html", "phone": "(859) 245-3620" }, "geometry": { "type": "Point", "coordinates": [ -84.41022665, 38.02412897 ] } },
+{ "type": "Feature", "properties": { "amenity": "food and cafes", "name": "Crank & Boom Ice Cream Lounge", "opening_hours": "Su-Th 12:00-22:00, Fr-Sa 12:00-23:00", "website": "https:\/\/crankandboom.com\/our-menu\/", "phone": "(859) 288-2176" }, "geometry": { "type": "Point", "coordinates": [ -84.51936361, 38.05655635 ] } },
+{ "type": "Feature", "properties": { "amenity": "food and cafes", "name": "Graeter's Ice Cream", "opening_hours": "Mo-Sa 11:00-23:00, Su 12:00-23:00", "website": "https:\/\/www.graeters.com\/retail-stores\/lexington\/chevychase", "phone": "(859) 253-6741" }, "geometry": { "type": "Point", "coordinates": [ -84.49044435, 38.02925769 ] } },
+{ "type": "Feature", "properties": { "amenity": "food and cafes", "name": "Evans Orchard and Cider Mill", "opening_hours": "Tu-Sa 9:00-18:00, Su 12:00-18:00", "website": "https:\/\/evansorchard.com\/", "phone": "(502) 863-2255" }, "geometry": { "type": "Point", "coordinates": [ -84.4772816, 38.21608245 ] } }
+]
+}

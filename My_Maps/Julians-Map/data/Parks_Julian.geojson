@@ -1,0 +1,13 @@
+{
+"type": "FeatureCollection",
+"name": "Parks_Julian",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "amenity": "parks and recreation", "name": "Kentucky Children's Garden", "opening_hours": "Th-Sa 10:00-17:00, Su 13:00-17:00", "website": "https:\/\/arboretum.ca.uky.edu\/gardens\/childrens", "phone": "(859) 257-6955" }, "geometry": { "type": "Point", "coordinates": [ -84.50204225, 38.01531696 ] } },
+{ "type": "Feature", "properties": { "amenity": "parks and recreation", "name": "Picadome Elementary School Playground", "opening_hours": "N\/A", "website": "https:\/\/www.fcps.net\/Picadome", "phone": "(859) 381-3563" }, "geometry": { "type": "Point", "coordinates": [ -84.52690827, 38.02975489 ] } },
+{ "type": "Feature", "properties": { "amenity": "parks and recreation", "name": "McConnell Springs", "opening_hours": "dawn-dusk", "website": "https:\/\/www.lexingtonky.gov\/mcconnell-springs-park", "phone": "(859) 225-4073" }, "geometry": { "type": "Point", "coordinates": [ -84.52787086, 38.05490338 ] } },
+{ "type": "Feature", "properties": { "amenity": "parks and recreation", "name": "Woodland Park", "opening_hours": "dawn-dusk", "website": "https:\/\/www.lexingtonky.gov\/list-of-all-city-parks", "phone": "(859) 288-2900" }, "geometry": { "type": "Point", "coordinates": [ -84.49033532, 38.03458147 ] } },
+{ "type": "Feature", "properties": { "amenity": "parks and recreation", "name": "C.M. Gatton Beaumont YMCA Swimming Pool", "opening_hours": "Mo-Fr 5:30-22:00, Sa 6:00-20:00, Su 10:00-20:00", "website": "https:\/\/ymcacky.org\/locations\/cm-gatton-beaumont-ymca", "phone": "(859) 219-9622" }, "geometry": { "type": "Point", "coordinates": [ -84.56231788, 38.0167904 ] } },
+{ "type": "Feature", "properties": { "amenity": "parks and recreation", "name": "Raven Run Nature Sanctuary", "opening_hours": "Nov-Mar 9:00-17:00, Apr & Oct 9:00-18:00, May & Sep 9:00-19:00, Jun-Aug 9:00-20:00", "website": "https:\/\/www.lexingtonky.gov\/raven-run-nature-sanctuary", "phone": "(859) 272-6105" }, "geometry": { "type": "Point", "coordinates": [ -84.39399882, 37.8938396 ] } }
+]
+}

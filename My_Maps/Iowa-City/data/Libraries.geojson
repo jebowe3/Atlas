@@ -1,0 +1,15 @@
+{
+"type": "FeatureCollection",
+"name": "Libraries",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "amenity": "library", "name": "Coralville Public Library", "phone": "(319) 248-1850", "website": "https:\/\/www.coralvillepubliclibrary.org\/", "operator": "Coralville", "review": "https:\/\/cutt.ly\/sefbg6N" }, "geometry": { "type": "Point", "coordinates": [ -91.5829476, 41.6775154 ] } },
+{ "type": "Feature", "properties": { "amenity": "library", "name": "Little Free Library", "phone": "N\/A", "website": "https:\/\/littlefreelibrary.org\/", "operator": "N\/A", "review": "https:\/\/tiny.cc\/25wuez" }, "geometry": { "type": "Point", "coordinates": [ -91.5272844, 41.6702773 ] } },
+{ "type": "Feature", "properties": { "amenity": "library", "name": "Main Library", "phone": "(319) 335-5299", "website": "https:\/\/www.lib.uiowa.edu\/", "operator": "The University of Iowa", "review": "https:\/\/cutt.ly\/vefbf3c" }, "geometry": { "type": "Point", "coordinates": [ -91.5384516, 41.6595337 ] } },
+{ "type": "Feature", "properties": { "amenity": "library", "name": "Little Free Library", "phone": "N\/A", "website": "https:\/\/littlefreelibrary.org\/", "operator": "N\/A", "review": "https:\/\/tiny.cc\/25wuez" }, "geometry": { "type": "Point", "coordinates": [ -91.5270188, 41.6674061 ] } },
+{ "type": "Feature", "properties": { "amenity": "library", "name": "Little Free Library", "phone": "N\/A", "website": "https:\/\/littlefreelibrary.org\/", "operator": "N\/A", "review": "https:\/\/tiny.cc\/25wuez" }, "geometry": { "type": "Point", "coordinates": [ -91.4907715, 41.6883239 ] } },
+{ "type": "Feature", "properties": { "amenity": "library", "name": "Iowa City Public Library", "phone": "(319) 356-5200", "website": "https:\/\/www.icpl.org\/", "operator": "Iowa City", "review": "https:\/\/tiny.cc\/ctquez" }, "geometry": { "type": "Point", "coordinates": [ -91.5322374, 41.65924557 ] } },
+{ "type": "Feature", "properties": { "amenity": "library", "name": "Sciences Library", "phone": "(319) 335-3083", "website": "https:\/\/www.lib.uiowa.edu\/sciences\/", "operator": "The University of Iowa", "review": "https:\/\/tiny.cc\/d2wuez" }, "geometry": { "type": "Point", "coordinates": [ -91.53382382, 41.66204816 ] } },
+{ "type": "Feature", "properties": { "amenity": "library", "name": "Hardin Library for the Health Sciences", "phone": "(319) 335-9151", "website": "https:\/\/www.lib.uiowa.edu\/hardin\/", "operator": "The University of Iowa", "review": "https:\/\/tiny.cc\/nrquez" }, "geometry": { "type": "Point", "coordinates": [ -91.547621, 41.6624207 ] } }
+]
+}

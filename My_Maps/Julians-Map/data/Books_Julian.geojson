@@ -1,0 +1,10 @@
+{
+"type": "FeatureCollection",
+"name": "Books_Julian",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "amenity": "books", "name": "Joseph-Beth Booksellers", "opening_hours": "Mo-Th 10:00-21:00, Fr-Sa 10:00-22:00, Su 10:00-18:00", "website": "https:\/\/www.josephbeth.com\/Default.aspx", "phone": "(859) 273-2911" }, "geometry": { "type": "Point", "coordinates": [ -84.5243567, 37.9948513 ] } },
+{ "type": "Feature", "properties": { "amenity": "books", "name": "Lexington Public Library, Beaumont Branch", "opening_hours": "Mo-Th 9:30-21:00, Fr 9:30-18:00, Sa 9:30-17:00, Su 13:00-17:00", "website": "https:\/\/www.lexpublib.org\/locations\/beaumont-branch", "phone": "(859) 231-5500" }, "geometry": { "type": "Point", "coordinates": [ -84.5575913, 38.01298803 ] } },
+{ "type": "Feature", "properties": { "amenity": "books", "name": "Lexington Public Library - Central Branch", "opening_hours": "Mo-Th 9:00-21:00, Fr 9:00-18:00, Sa 9:00-17:00, Su 13:00-17:00", "website": "https:\/\/www.lexpublib.org\/", "phone": "(859) 231-5500" }, "geometry": { "type": "Point", "coordinates": [ -84.49669919, 38.04544806 ] } }
+]
+}

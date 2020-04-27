@@ -1,0 +1,14 @@
+{
+"type": "FeatureCollection",
+"name": "Bookstores",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "name": "Prairie Lights Books & Cafe", "shop": "books", "phone": "(319) 337-2681", "website": "https:\/\/www.prairielights.com\/", "review": "https:\/\/tiny.cc\/8evuez" }, "geometry": { "type": "Point", "coordinates": [ -91.5333207, 41.6606644 ] } },
+{ "type": "Feature", "properties": { "name": "Barnes & Noble", "shop": "books", "phone": "(319) 337-3337", "website": "https:\/\/stores.barnesandnoble.com\/store\/2917", "review": "https:\/\/tiny.cc\/ouwuez" }, "geometry": { "type": "Point", "coordinates": [ -91.6052536, 41.6906818 ] } },
+{ "type": "Feature", "properties": { "name": "Iowa Book", "shop": "books", "phone": "(319) 337-4188", "website": "https:\/\/www.iowabook.com\/", "review": "https:\/\/tiny.cc\/ahvuez" }, "geometry": { "type": "Point", "coordinates": [ -91.534231919040295, 41.661021503328236 ] } },
+{ "type": "Feature", "properties": { "name": "Haunted Bookshop", "shop": "books", "phone": "(319) 337-2996", "website": "https:\/\/www.thehauntedbookshop.com\/", "review": "https:\/\/shorturl.at\/cftuV" }, "geometry": { "type": "Point", "coordinates": [ -91.530351324892607, 41.664234482022721 ] } },
+{ "type": "Feature", "properties": { "name": "Captain's Bookshoppe LLC", "shop": "books", "phone": "(319) 351-3166", "website": "https:\/\/www.captainsbookshoppe.com\/", "review": "https:\/\/shorturl.at\/xHKTU" }, "geometry": { "type": "Point", "coordinates": [ -91.50369050119869, 41.642561508648122 ] } },
+{ "type": "Feature", "properties": { "name": "Iowa Hawk Shop", "shop": "books", "phone": "(800) 429-5746", "website": "https:\/\/www.hawkshop.com\/", "review": "https:\/\/shorturl.at\/adBOW" }, "geometry": { "type": "Point", "coordinates": [ -91.538341697829324, 41.663104658692042 ] } },
+{ "type": "Feature", "properties": { "name": "Daydreams Comics", "shop": "books", "phone": "(319) 354-6632", "website": "https:\/\/www.daydreamscomics.com\/", "review": "https:\/\/shorturl.at\/ctKV5" }, "geometry": { "type": "Point", "coordinates": [ -91.533322212475909, 41.660542330664136 ] } }
+]
+}

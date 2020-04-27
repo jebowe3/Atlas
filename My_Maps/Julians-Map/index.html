@@ -1,0 +1,256 @@
+<html lang='en'>
+<head>
+    <title>Julian's Map of Favorite Places</title>
+    <meta charset="utf-8" />
+    <link href="https://fonts.googleapis.com/css?family=Corben:700|Nobile:500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+      integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+      crossorigin=""/>
+
+    <script src="https://kit.fontawesome.com/3625013d3b.js" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="css/leaflet.extra-markers.min.css">
+    <style>
+        body {
+            margin: 0px;
+            height: 100%;
+            width: 100%;
+        }
+        /* Add prairie banner to header background */
+        header {
+          background-image: url('images/horserace.png');
+          position: fixed;
+          width: 100%;
+          height: 100px;
+          background-color: #000000;
+          box-shadow: 0px 5px 5px black;
+          z-index: 800;
+        }
+        /* Set and style fonts for text in map */
+        h1{
+          font-family: 'Corben', cursive;
+          font-size: 30px;
+          display: inline-block;
+          color: #ffff00;
+          margin-top: 0.0em;
+          margin-bottom: 0.0em;
+          margin-left: 10;
+          margin-right: 0;
+          font-weight: normal;
+        }
+        h2 {
+          font-family: 'Nobile', sans-serif;
+          font-size: 13px;
+          display: inline-block;
+          color: #f7f4ea;
+          margin-top: 0.0em;
+          margin-bottom: 0.0em;
+          margin-left: 10;
+          margin-right: 0;
+          font-weight: normal;
+        }
+        h3 {
+          font-family: 'Corben', cursive;
+          font-size: 16px;
+          display: block;
+          margin-top: 0.0em;
+          margin-bottom: 0.0em;
+          margin-left: 0;
+          margin-right: 0;
+          font-weight: normal;
+        }
+        h4 {
+          font-family: 'Nobile', sans-serif;
+          font-size: 12px;
+          display: block;
+          margin-top: 0.0em;
+          margin-bottom: 0.0em;
+          margin-left: 0;
+          margin-right: 0;
+          font-weight: normal;
+        }
+        /* Set map parameters */
+        #map {
+          position: fixed;
+          top: 100px;
+          bottom: 0px;
+          width: 100%;
+        }
+        /* Set background colors for popup windows */
+        .leaflet-popup-content-wrapper {
+          background-color: #f2eecb;
+        }
+        .leaflet-popup-tip {
+          background: #f2eecb;
+        }
+        /* Set background color of layer control */
+        .leaflet-control-layers-expanded {
+          font-family: 'Corben', cursive;
+          background-color: #f2eecb;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+          <h1>Julian's Map of Favorite Places</h1><br>
+          <h2>Map by <a href = 'https://jebowe3.github.io/Map-Portfolio/' style='color:#f7f4ea;'>Jay Bowen</a>, 2019 | Markers customized with <a href = 'https://github.com/coryasilva/Leaflet.ExtraMarkers' style='color:#f7f4ea;'>Leaflet Extra Markers</a> and <a href = 'https://github.com/lvoogdt/Leaflet.awesome-markers' style='color:#f7f4ea;'>Leaflet Awesome Markers</a>, based on <a href = 'https://fontawesome.com/license' style='color:#f7f4ea;'>Font Awesome</a> icons</h2>
+    </header>
+    <div id="map"></div>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+      integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+      crossorigin=""></script>
+    <script src="leaflet_awesome_markers.js"></script>
+
+    <script src="js/leaflet.extra-markers.min.js"></script>
+    <script>
+        // center map on Lexington coordinates and set initial zoom
+        var map = L.map('map').setView([38.047648, -84.497775], 13);
+
+        // define the basemap using the thunderforest pioneer map and set minimum and maximum zoom levels
+        var basemap = L.tileLayer('https://tile.thunderforest.com/pioneer/{z}/{x}/{y}.png?apikey=dd2dca516d114fd89c0b1403358cbfa8', {
+          attribution: '&copy; <a href="http://www.thunderforest.com/">Thunderforest</a>, &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+          apikey: '<dd2dca516d114fd89c0b1403358cbfa8>',
+          maxZoom: 18,
+          minZoom: 11,
+        }).addTo(map);
+
+        // add a scale bar
+        L.control.scale().addTo(map);
+
+        // load the data asynchronously
+        d3.queue()
+          .defer(d3.json, 'data/Books_Julian.geojson')
+          .defer(d3.json, 'data/Education_Julian.geojson')
+          .defer(d3.json, 'data/Food_Julian.geojson')
+          .defer(d3.json, 'data/Parks_Julian.geojson')
+          .defer(d3.json, 'data/Trains_Julian.geojson')
+          .await(drawMap);
+
+          // define drawMap function
+          function drawMap(err, read, learn, eat, play, watch) {
+
+            // create books Leaflet GeoJSON layer and style with Awesome Markers
+            var books = L.geoJson(read, {
+              pointToLayer: function(feature, ll) {
+                return L.marker(ll, {icon: L.ExtraMarkers.icon({icon: 'fas fa-book', prefix: 'fa', markerColor: 'purple', iconColor: 'white'})
+                })
+              }
+            });
+
+            // create education Leaflet GeoJSON layer and style with Awesome Markers
+            var education = L.geoJson(learn, {
+              pointToLayer: function(feature, ll) {
+                return L.marker(ll, {icon: L.ExtraMarkers.icon({icon: 'fas fa-puzzle-piece', prefix: 'fa', markerColor: 'blue', iconColor: 'white'})
+                })
+              }
+            });
+
+            // create food Leaflet GeoJSON layer and style with Awesome Markers
+            var food = L.geoJson(eat, {
+              pointToLayer: function(feature, ll) {
+                return L.marker(ll, {icon: L.ExtraMarkers.icon({icon: 'fas fa-cookie-bite', prefix: 'fa', markerColor: 'red', iconColor: 'white'})
+                })
+              }
+            });
+
+            // create parks Leaflet GeoJSON layer and style with Awesome Markers
+            var parks = L.geoJson(play, {
+              pointToLayer: function(feature, ll) {
+                return L.marker(ll, {icon: L.ExtraMarkers.icon({icon: 'fas fa-biking', prefix: 'fa', markerColor: 'green', iconColor: 'white'})
+                })
+              }
+            });
+
+            // create trains Leaflet GeoJSON layer and style with Awesome Markers
+            var trains = L.geoJson(watch, {
+              pointToLayer: function(feature, ll) {
+                return L.marker(ll, {icon: L.ExtraMarkers.icon({icon: 'fas fa-train', prefix: 'fa', markerColor: 'orange', iconColor: 'white'})
+                })
+              }
+            });
+
+            // add content to popup window using the books Leaflet GeoJSON layer properties
+            books.eachLayer(function(layer) {
+                var props = layer.feature.properties;
+                layer.bindPopup("<h3>" + props.name + "</h3><br>" +
+                                "<h4>Hours Open: " + props.opening_hours +
+                                "<br>Phone Number: " + props.phone +
+                                "<br>Take me to the <a target='blank' href=" + "'" + props.website + "''" + ">website</a>.</h4>" // add website
+                                );
+                layer.on('mouseover', function (e) {
+                  this.openPopup();
+                });
+            })
+
+            // add content to popup window using the education Leaflet GeoJSON layer properties
+            education.eachLayer(function(layer) {
+                var props = layer.feature.properties;
+                layer.bindPopup("<h3>" + props.name + "</h3><br>" +
+                                "<h4>Hours Open: " + props.opening_hours +
+                                "<br>Phone Number: " + props.phone +
+                                "<br>Take me to the <a target='blank' href=" + "'" + props.website + "''" + ">website</a>.</h4>" // add website
+                                );
+                layer.on('mouseover', function (e) {
+                  this.openPopup();
+                });
+            })
+
+            // add content to popup window using the food Leaflet GeoJSON layer properties
+            food.eachLayer(function(layer) {
+                var props = layer.feature.properties;
+                layer.bindPopup("<h3>" + props.name + "</h3><br>" +
+                                "<h4>Hours Open: " + props.opening_hours +
+                                "<br>Phone Number: " + props.phone +
+                                "<br>Take me to the <a target='blank' href=" + "'" + props.website + "''" + ">website</a>.</h4>" // add website
+                                );
+                layer.on('mouseover', function (e) {
+                  this.openPopup();
+                });
+            })
+
+            // add content to popup window using the parks Leaflet GeoJSON layer properties
+            parks.eachLayer(function(layer) {
+                var props = layer.feature.properties;
+                layer.bindPopup("<h3>" + props.name + "</h3><br>" +
+                                "<h4>Hours Open: " + props.opening_hours +
+                                "<br>Phone Number: " + props.phone +
+                                "<br>Take me to the <a target='blank' href=" + "'" + props.website + "''" + ">website</a>.</h4>" // add website
+                                );
+                layer.on('mouseover', function (e) {
+                  this.openPopup();
+                });
+            })
+
+            // add content to popup window using the trains Leaflet GeoJSON layer properties
+            trains.eachLayer(function(layer) {
+                var props = layer.feature.properties;
+                layer.bindPopup("<h3>" + props.name + "</h3><br>" +
+                                "<h4>Hours Open: " + props.opening_hours +
+                                "<br>Phone Number: " + props.phone +
+                                "<br>Take me to the <a target='blank' href=" + "'" + props.website + "''" + ">website</a>.</h4>" // add website
+                                );
+                layer.on('mouseover', function (e) {
+                  this.openPopup();
+                });
+            })
+
+            // designate the layers as overlays
+            var overlays = {
+              "Reading": books,
+              "Learning": education,
+              "Eating": food,
+              "Playing": parks,
+              "Trains!": trains
+            };
+
+            // all done with the layers, add them to layer control
+            L.control.layers(null, overlays, {
+              collapsed: false,
+            }).addTo(map);
+
+          }; // end drawMap function, that's it!
+    </script>
+</body>
+</html>

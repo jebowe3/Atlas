@@ -1,0 +1,203 @@
+<html lang='en'>
+<head>
+    <title>Iowa City Libraries, Bookstores, and Cafés</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="https://d19vzq90twjlae.cloudfront.net/leaflet-0.7/leaflet.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css">
+    <link href="https://fonts.googleapis.com/css?family=Fanwood+Text|Shrikhand" rel="stylesheet">
+    <style>
+        body {
+            margin: 0px;
+            height: 100%;
+            width: 100%;
+        }
+        /* Add prairie banner to header background */
+        header {
+          background-image: url('https://jebowe3.github.io/Iowa-City/images/grass_bw.png');
+          position: fixed;
+          width: 100%;
+          height: 100px;
+          background-color: #000000;
+          box-shadow: 0px 5px 5px black;
+          z-index: 800;
+        }
+        /* Set and style fonts for text in map */
+        h1{
+          font-family: 'Shrikhand', cursive;
+          font-size: 30px;
+          display: inline-block;
+          color: #f2eecb;
+          margin-top: 0.0em;
+          margin-bottom: 0.0em;
+          margin-left: 10;
+          margin-right: 0;
+          font-weight: normal;
+        }
+        h2 {
+          font-family: 'Fanwood Text', serif;
+          font-size: 20px;
+          display: inline-block;
+          color: #f7f4ea;
+          margin-top: 0.0em;
+          margin-bottom: 0.0em;
+          margin-left: 10;
+          margin-right: 0;
+          font-weight: normal;
+        }
+        h3 {
+          font-family: 'Shrikhand', cursive;
+          font-size: 16px;
+          display: block;
+          margin-top: 0.0em;
+          margin-bottom: 0.0em;
+          margin-left: 0;
+          margin-right: 0;
+          font-weight: normal;
+        }
+        h4 {
+          font-family: 'Fanwood Text', serif;
+          font-size: 12px;
+          display: block;
+          margin-top: 0.0em;
+          margin-bottom: 0.0em;
+          margin-left: 0;
+          margin-right: 0;
+          font-weight: normal;
+        }
+        /* Set map parameters */
+        #map {
+          position: fixed;
+          top: 100px;
+          bottom: 0px;
+          width: 100%;
+        }
+        /* Set background colors for popup windows */
+        .leaflet-popup-content-wrapper {
+          background-color: #f2eecb;
+        }
+        .leaflet-popup-tip {
+          background: #f2eecb;
+        }
+        /* Set background color of layer control */
+        .leaflet-control-layers-expanded {
+          font-family: 'Shrikhand', cursive;
+          background-color: #f2eecb;
+          padding-top:1em;
+          padding-bottom:0em;
+        }
+    </style>
+</head>
+<body>
+    <header>
+          <h1>Iowa City Libraries, Bookstores, and Cafés</h1><br>
+          <h2>Map by <a href = 'https://jebowe3.github.io/Map-Portfolio/' style='color:#f7f4ea;'>Jay Bowen</a>, 2019 | Markers customized with <a href = 'https://github.com/lvoogdt/Leaflet.awesome-markers' style='color:#f7f4ea;'>Leaflet Awesome Markers</a>, based on <a href = 'https://fontawesome.com/license' style='color:#f7f4ea;'>Font Awesome</a> icons</h2>
+    </header>
+    <div id="map"></div>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+    <script src="leaflet_awesome_markers.js"></script>
+    <script>
+        // center map on Iowa City coordinates and set initial zoom
+        var map = L.map('map').setView([41.66, -91.53], 15);
+
+        // define the basemap using the thunderforest neighborhood map and set minimum and maximum zoom levels
+        var basemap = L.tileLayer('https://tile.thunderforest.com/neighbourhood/{z}/{x}/{y}.png?apikey=dd2dca516d114fd89c0b1403358cbfa8', {
+          attribution: '&copy; <a href="http://www.thunderforest.com/">Thunderforest</a>, &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+          apikey: '<dd2dca516d114fd89c0b1403358cbfa8>',
+          maxZoom: 18,
+          minZoom: 13,
+        }).addTo(map);
+
+        // add a scale bar
+        L.control.scale().addTo(map);
+
+        // load the data asynchronously
+        d3.queue()
+          .defer(d3.json, 'data/Libraries.geojson')
+          .defer(d3.json, 'data/Bookstores.geojson')
+          .defer(d3.json, 'data/Cafes.geojson')
+          .await(drawMap);
+
+          // define drawMap function
+          function drawMap(err, libs, books, coffee) {
+
+            // create libraries Leaflet GeoJSON layer and style with Awesome Markers
+            var libraries = L.geoJson(libs, {
+              pointToLayer: function(feature, ll) {
+                return L.marker(ll, {icon: L.AwesomeMarkers.icon({icon: 'bookmark', prefix: 'fa', markerColor: 'green', iconColor: 'white'})
+                })
+              }
+            });
+
+            // create bookstores Leaflet GeoJSON layer and style with Awesome Markers
+            var bookstores = L.geoJson(books, {
+              pointToLayer: function(feature, ll) {
+                return L.marker(ll, {icon: L.AwesomeMarkers.icon({icon: 'book', prefix: 'fa', markerColor: 'red', iconColor: 'white'})
+                })
+              }
+            });
+
+            // create cafes Leaflet GeoJSON layer and style with Awesome Markers
+            var cafes = L.geoJson(coffee, {
+              pointToLayer: function(feature, ll) {
+                return L.marker(ll, {icon: L.AwesomeMarkers.icon({icon: 'coffee', prefix: 'fa', markerColor: 'blue', iconColor: 'white'})
+                })
+              }
+            });
+
+            // add content to popup window using the libraries Leaflet GeoJSON layer properties
+            libraries.eachLayer(function(layer) {
+                var props = layer.feature.properties;
+                layer.bindPopup("<h3>" + props.name + "</h3><br>" +
+                                "<h4>Phone Number: " + props.phone +
+                                "<br>Take me to the <a target='blank' href=" + "'" + props.website + "''" + ">website</a>." + // add website
+                                "<br>Let me see the <a target='blank' href=" + "'" + props.review + "''" + ">reviews</a>.</h4>" // add google reviews
+                                );
+                layer.on('mouseover', function (e) {
+                  this.openPopup();
+                });
+            })
+
+            // add content to popup window using the bookstores Leaflet GeoJSON layer properties
+            bookstores.eachLayer(function(layer) {
+                var props = layer.feature.properties;
+                layer.bindPopup("<h3>" + props.name + "</h3><br>" +
+                                "<h4>Phone Number: " + props.phone +
+                                "<br>Take me to the <a target='blank' href=" + "'" + props.website + "''" + ">website</a>." + // add website
+                                "<br>Let me see the <a target='blank' href=" + "'" + props.review + "''" + ">reviews</a>.</h4>" // add google reviews
+                                );
+                layer.on('mouseover', function (e) {
+                  this.openPopup();
+                });
+            })
+
+            // add content to popup window using the cafes Leaflet GeoJSON layer properties
+            cafes.eachLayer(function(layer) {
+                var props = layer.feature.properties;
+                layer.bindPopup("<h3>" + props.name + "</h3><br>" +
+                                "<h4>Phone Number: " + props.phone +
+                                "<br>Take me to the <a target='blank' href=" + "'" + props.website + "''" + ">website</a>." + // add website
+                                "<br>Let me see the <a target='blank' href=" + "'" + props.review + "''" + ">reviews</a>.</h4>" // add google reviews
+                                );
+                layer.on('mouseover', function (e) {
+                  this.openPopup();
+                });
+            })
+
+            // designate the layers as overlays
+            var overlays = {
+              "Libraries": libraries,
+              "Bookstores": bookstores,
+              "Cafes": cafes
+            };
+
+            // all done with the layers, add them to layer control
+            L.control.layers(null, overlays, {
+              collapsed: false,
+            }).addTo(map);
+
+          }; // end drawMap function, that's it!
+    </script>
+</body>
+</html>
