@@ -224,18 +224,33 @@
 
   <!-- begin javascript -->
   <script>
+    // define the map
+    var map = L.map('map');
+    // create a label pane
+    map.createPane('labels');
+    // set the z index of the label pane
+    map.getPane('labels').style.zIndex = 650;
 
-    // mapbox access token for your account
-    L.mapbox.accessToken = 'pk.eyJ1IjoiamVib3dlMyIsImEiOiJjajY1M3l6bWIxeTQwMndtcXRuN3F4ejFpIn0.aE7P49pqaBKjy2HTOw-tgw';
-    var map = L.mapbox.map('map', 'mapbox.dark', {
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
+    	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    	subdomains: 'abcd',
       zoomDelta: 0.25,
       zoomSnap: 0.25,
-      //center: [0, 0],
-      //zoom: 2,
       minZoom: 1.75,
       maxZoom: 5,
       maxBounds: L.latLngBounds([90.0, 180.0], [-90.0, -180.0])
-    });
+    }).addTo(map);
+
+    var labels = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}{r}.png', {
+    	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    	subdomains: 'abcd',
+      zoomDelta: 0.25,
+      zoomSnap: 0.25,
+      minZoom: 1.75,
+      maxZoom: 5,
+      maxBounds: L.latLngBounds([90.0, 180.0], [-90.0, -180.0]),
+      pane: 'labels'
+    }).addTo(map);
 
     // fit map to world...
     map.fitWorld().zoomIn();
