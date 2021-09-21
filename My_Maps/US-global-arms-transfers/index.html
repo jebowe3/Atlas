@@ -98,13 +98,14 @@
       margin-top: 8px;
       /* overwrite assembly.css rule */
     }
+
   </style>
 
 </head>
 
 <body>
-  <div class='grid'>
-    <div class='col col--12 col--3-ml p12 pb6 viewport-third viewport-full-ml'>
+  <div class='grid h-auto'>
+    <div class='col col--12 col--3-ml p12 viewport-third viewport-full-ml'>
       <div id='scroll' class='h-full scroll-auto'>
         <h1 class='txt-subhead mb6'>Destinations of US Weaponry: 2008-2018</h1>
         <p>This map uses data downloaded from the Stockholm International Peace Research Institute's (SIPRI) Arms Transfers Database of Trend Indicator Values (TIV). These values are based on the known unit production costs of a core set of weapons and are intended
@@ -134,8 +135,8 @@
       </div>
       <!-- end scroll bar -->
     </div>
-    <div class='col col--12 col--9-ml h180 h-full-ml'>
-      <div id="map" class='viewport-twothirds viewport-full-ml'></div>
+    <div class='col col--12 col--9-ml h-auto-ml'>
+      <div id="map" class='viewport-full-ml'></div>
 
       <!-- legend on/off button -->
       <div id="button" class="leaflet-top" style="pointer-events: auto">
@@ -180,7 +181,7 @@
 
       <!-- temporal legend -->
       <div id='temporal' class='py6 px12 bg-white border border--gray-light round bottom left wmax200'>
-        <h3 class='txt-bold'>Year: <span></span></h3>
+        <h3 class='txt-bold'><span></span></h3>
       </div>
       <!-- end temporal -->
 
@@ -211,7 +212,7 @@
       <!-- end circleInfo -->
 
       <!-- keeps map from jarring -->
-      <div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+      <div id="container" style="min-width: 0px; height: 0px; max-width: 0px; margin: 0 auto"></div>
 
     </div>
   </div>
@@ -365,7 +366,7 @@
 
       }
 
-      $('#temporal span').html(currentYear); // change grade value to that currently selected by UI slider
+      $('#temporal span').html('Year: ' + currentYear); // change grade value to that currently selected by UI slider
 
       temporalLegend.addTo(map); // add the temporal legend to the map
 
